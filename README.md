@@ -7,4 +7,6 @@ In particular,
   * the `camomileService` makes it easy to interact with the [backend](http://github.com/camomile-project/camomile-server) by encapsulating the Camomile Javascript [client](http://github.com/camomile-project/camomile-client-javascript).
   * the `CamomileCtrl` controller takes care of user authentication.
 
-Fork and enjoy!
+This simple application adds another controller called `BrowseCtrl` showing how this template can be used to browse existing corpora, media and layers...
+
+Fork, update `js/config.js` and enjoy!
