@@ -68,8 +68,8 @@ angular.module('camomileApp.controllers.browse',
 
     $scope.$watch('browse.medium', function () {
       $scope.browse.mediumSrc = [
-        {src: $sce.trustAsResourceUrl(camomileService.getMediumURL($scope.browse.medium, "mp4")), type: "video/mp4"},
         {src: $sce.trustAsResourceUrl(camomileService.getMediumURL($scope.browse.medium, "webm")), type: "video/webm"},
+        {src: $sce.trustAsResourceUrl(camomileService.getMediumURL($scope.browse.medium, "mp4")), type: "video/mp4"},
         {src: $sce.trustAsResourceUrl(camomileService.getMediumURL($scope.browse.medium, "ogg")), type: "video/ogg"}
       ];
     });
