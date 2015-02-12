@@ -1,5 +1,8 @@
 angular.module('camomileApp.controllers.browse',
   [
+    "ngSanitize",
+    "com.2fdevs.videogular",
+    "com.2fdevs.videogular.plugins.controls",
   ])
   .controller('BrowseCtrl', ['$scope', '$sce', 'camomileService', function ($scope, $sce, camomileService) {
 
@@ -63,5 +66,12 @@ angular.module('camomileApp.controllers.browse',
       getLayers();
     });
 
+    $scope.$watch('browse.medium', function () {
+      $scope.browse.mediumSrc = [
+        {src: $sce.trustAsResourceUrl(camomileService.getMediumURL($scope.browse.medium, "mp4")), type: "video/mp4"},
+        {src: $sce.trustAsResourceUrl(camomileService.getMediumURL($scope.browse.medium, "webm")), type: "video/webm"},
+        {src: $sce.trustAsResourceUrl(camomileService.getMediumURL($scope.browse.medium, "ogg")), type: "video/ogg"}
+      ];
+    });
 
   }]);
