@@ -1,8 +1,8 @@
 angular.module('camomile.services', [])
 
-.factory('camomileService', ['camomileConfig', function (camomileConfig) {
+.factory('Camomile', ['camomileConfig', function (camomileConfig) {
 
-  camomile.setURL(camomileConfig.backend);
-  return camomile;
+  Camomile.setURL(camomileConfig.backend);
+  return Camomile;
 
 }]);

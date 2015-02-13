@@ -4,7 +4,7 @@ angular.module('camomileApp.controllers.browse',
     "com.2fdevs.videogular",
     "com.2fdevs.videogular.plugins.controls",
   ])
-  .controller('BrowseCtrl', ['$scope', '$sce', 'camomileService', function ($scope, $sce, camomileService) {
+  .controller('BrowseCtrl', ['$scope', '$sce', 'Camomile', function ($scope, $sce, Camomile) {
 
     // browsing stauts
     $scope.browse = {};
@@ -26,7 +26,7 @@ angular.module('camomileApp.controllers.browse',
 
     // update list of corpora 
     var getCorpora = function () {
-      camomileService.getCorpora(function (err, data) {
+      Camomile.getCorpora(function (err, data) {
         var corpora;
         if (err) { corpora = []; } else { corpora = data; }
         // nested in $scope.$apply to make sure a change event is triggered
@@ -36,7 +36,7 @@ angular.module('camomileApp.controllers.browse',
 
     // update list of media
     var getMedia = function () {
-      camomileService.getMedia(function (err, data) {
+      Camomile.getMedia(function (err, data) {
         var media;
         if (err) { media = []; } else { media = data; }
         // nested in $scope.$apply to make sure a change event is triggered
@@ -46,7 +46,7 @@ angular.module('camomileApp.controllers.browse',
 
     // update list of layers
     var getLayers = function () {
-      camomileService.getLayers(function (err, data) {
+      Camomile.getLayers(function (err, data) {
         var layers;
         if (err) { layers = []; } else { layers = data; }
         // nested in $scope.$apply to make sure a change event is triggered
@@ -68,9 +68,9 @@ angular.module('camomileApp.controllers.browse',
 
     $scope.$watch('browse.medium', function () {
       $scope.browse.mediumSrc = [
-        {src: $sce.trustAsResourceUrl(camomileService.getMediumURL($scope.browse.medium, "webm")), type: "video/webm"},
-        {src: $sce.trustAsResourceUrl(camomileService.getMediumURL($scope.browse.medium, "mp4")), type: "video/mp4"},
-        {src: $sce.trustAsResourceUrl(camomileService.getMediumURL($scope.browse.medium, "ogg")), type: "video/ogg"}
+        {src: $sce.trustAsResourceUrl(Camomile.getMediumURL($scope.browse.medium, "webm")), type: "video/webm"},
+        {src: $sce.trustAsResourceUrl(Camomile.getMediumURL($scope.browse.medium, "mp4")), type: "video/mp4"},
+        {src: $sce.trustAsResourceUrl(Camomile.getMediumURL($scope.browse.medium, "ogg")), type: "video/ogg"}
       ];
     });
 

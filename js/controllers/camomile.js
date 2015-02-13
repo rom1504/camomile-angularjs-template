@@ -1,6 +1,6 @@
 angular.module('camomile.controllers', [])
 
-.controller('CamomileCtrl', ['$scope', 'camomileService', function ($scope, camomileService) {
+.controller('CamomileCtrl', ['$scope', 'Camomile', function ($scope, Camomile) {
 
   $scope.user = undefined;
 
@@ -25,7 +25,7 @@ angular.module('camomile.controllers', [])
   // authenticate user by making a call to /me
   var _authenticate = function (callback) {
 
-    camomileService.me(function (err, data) {
+    Camomile.me(function (err, data) {
       var user;
       if (err) {
         user = undefined;
@@ -48,7 +48,7 @@ angular.module('camomile.controllers', [])
   // then call onLoginCallback (usually set by child controller)
   $scope.credentials = {};
   $scope.login = function () {
-    camomileService.login($scope.credentials.username, $scope.credentials.password, function (err) {
+    Camomile.login($scope.credentials.username, $scope.credentials.password, function (err) {
       if (!err) { _authenticate(onLoginCallback); }
     });
   };
@@ -56,7 +56,7 @@ angular.module('camomile.controllers', [])
   // logout
   // then call onLogoutCallabck (usually set by child controller)
   $scope.logout = function () {
-    camomileService.logout(function (err) {
+    Camomile.logout(function (err) {
       if (!err) { _authenticate(onLogoutCallback); }
     });
   };
