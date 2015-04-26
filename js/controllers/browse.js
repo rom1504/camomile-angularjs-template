@@ -1,5 +1,4 @@
-angular.module('camomileApp.controllers.browse',
-  [
+angular.module('camomileApp.controllers.browse', [
     "ngSanitize",
     "com.2fdevs.videogular",
     "com.2fdevs.videogular.plugins.controls",
@@ -28,9 +27,15 @@ angular.module('camomileApp.controllers.browse',
     var getCorpora = function () {
       Camomile.getCorpora(function (err, data) {
         var corpora;
-        if (err) { corpora = []; } else { corpora = data; }
+        if (err) {
+          corpora = [];
+        } else {
+          corpora = data;
+        }
         // nested in $scope.$apply to make sure a change event is triggered
-        $scope.$apply(function () { $scope.browse.corpora = corpora; });
+        $scope.$apply(function () {
+          $scope.browse.corpora = corpora;
+        });
       });
     };
 
@@ -38,20 +43,40 @@ angular.module('camomileApp.controllers.browse',
     var getMedia = function () {
       Camomile.getMedia(function (err, data) {
         var media;
-        if (err) { media = []; } else { media = data; }
+        if (err) {
+          media = [];
+        } else {
+          media = data;
+        }
         // nested in $scope.$apply to make sure a change event is triggered
-        $scope.$apply(function () { $scope.browse.media = media; });
-      }, {'corpus': $scope.browse.corpus});
+        $scope.$apply(function () {
+          $scope.browse.media = media;
+        });
+      }, {
+        'filter': {
+          'id_corpus': $scope.browse.corpus
+        }
+      });
     };
 
     // update list of layers
     var getLayers = function () {
       Camomile.getLayers(function (err, data) {
         var layers;
-        if (err) { layers = []; } else { layers = data; }
+        if (err) {
+          layers = [];
+        } else {
+          layers = data;
+        }
         // nested in $scope.$apply to make sure a change event is triggered
-        $scope.$apply(function () { $scope.browse.layers = layers; });
-      }, {'corpus': $scope.browse.corpus});
+        $scope.$apply(function () {
+          $scope.browse.layers = layers;
+        });
+      }, {
+        'filter': {
+          'id_corpus': $scope.browse.corpus
+        }
+      });
     };
 
     // get corpora on load
@@ -67,11 +92,16 @@ angular.module('camomileApp.controllers.browse',
     });
 
     $scope.$watch('browse.medium', function () {
-      $scope.browse.mediumSrc = [
-        {src: $sce.trustAsResourceUrl(Camomile.getMediumURL($scope.browse.medium, "webm")), type: "video/webm"},
-        {src: $sce.trustAsResourceUrl(Camomile.getMediumURL($scope.browse.medium, "mp4")), type: "video/mp4"},
-        {src: $sce.trustAsResourceUrl(Camomile.getMediumURL($scope.browse.medium, "ogg")), type: "video/ogg"}
-      ];
+      $scope.browse.mediumSrc = [{
+        src: $sce.trustAsResourceUrl(Camomile.getMediumURL($scope.browse.medium, "webm")),
+        type: "video/webm"
+      }, {
+        src: $sce.trustAsResourceUrl(Camomile.getMediumURL($scope.browse.medium, "mp4")),
+        type: "video/mp4"
+      }, {
+        src: $sce.trustAsResourceUrl(Camomile.getMediumURL($scope.browse.medium, "ogg")),
+        type: "video/ogg"
+      }];
     });
 
   }]);
