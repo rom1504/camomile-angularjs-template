@@ -1,0 +1,48 @@
+  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Camomile</a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+         <ul class="nav navbar-nav">
+          <li><a href="#/user">Users &amp; groups</a></li>
+          <li><a href="#/corpus">Corpora</a></li>
+          <li><a href="#/queue">Queues</a></li>
+         </ul>
+        
+        <!-- Login form if not logged in -->
+        <div ng-hide="user">
+          <form ng-submit="login()" class="navbar-form navbar-right" role="form">
+            <div class="form-group">
+              <input type="text" placeholder="Login" class="form-control" ng-model="credentials.username">
+            </div>
+            <div class="form-group">
+              <input type="password" placeholder="Password" class="form-control" ng-model="credentials.password">
+            </div>
+            <button type="submit" class="btn btn-info">Log in</button>
+          </form>
+        </div>
+        <!-- Logout form if logged in -->
+        <div ng-show="user">
+          <form ng-submit="logout()" class="navbar-form navbar-right" role="form" >
+            <div class="dropdown">
+              <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown">
+              <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+              {{ user.username }}
+              <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li ng-click="logout()" role="presentation"><a data-target="#">Log out</a></li>
+              </ul>
+            </div>
+          </form>
+        </div>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>

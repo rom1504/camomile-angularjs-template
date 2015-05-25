@@ -1,0 +1,76 @@
+<div class="row">
+  <div class="col-md-6">
+    <h3>Corpora</h3>
+    <div class="panel panel-default">
+      <div class="panel-heading">Add corpus</div>
+      <div class="panel-body">
+        <form novalidate class="form-inline">
+          <div class="form-group">
+            <label class="sr-only" for="name">Name</label>
+            <input type="text" ng-model="corpus.name" class="form-control" id="name" placeholder="Enter name">
+          </div>
+          <button type="submit" ng-click="newCorpus(corpus)" class="btn btn-default">New corpus</button>
+        </form>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <form class="form-inline">
+          <input ng-model="corpusQuery" type="text" placeholder="filter" autofocus>
+        </form>
+      </div>
+      <div class="panel-body">
+        <ul class="list-group">
+          <li class="list-group-item" ng-repeat="corpus in model.corpora | filter:corpusQuery | orderBy: 'name'">
+            <h4>{{corpus.name}}</h4>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="btn-group" role="group">
+                  <button type="button" ng-click="deleteCorpus(corpus)" class="btn btn-default btn-xs" aria-label="Delete corpus">
+                  <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                  </button>
+                  <div ng-repeat="permission in [3, 2, 1]" class="btn-group" role="group">
+                    <button class="btn btn-{{ permission | bootstrapPermission }} btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                    {{ permission | humanReadablePermission }} <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                      <li role="presentation" class="dropdown-header">Groups</li>
+                      <li ng-repeat="(group, name) in model.groupname">
+                        <a ng-click="setCorpusPermissionForGroup(corpus._id, group, permission)">{{ name }}</a>
+                      </li>
+                      <li role="presentation" class="dropdown-header">Users</li>
+                      <li ng-repeat="(user, name) in model.username">
+                        <a ng-click="setCorpusPermissionForUser(corpus._id, user, permission)">{{ name }}</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="btn-group" role="group">
+                  <button
+                  ng-repeat="(group, permission) in model.permissions[corpus._id].groups"
+                  ng-click="removeCorpusPermissionForGroup(corpus._id, group)"
+                  type="button" class="btn btn-{{ permission | bootstrapPermission }} btn-xs">
+                  group: {{ model.groupname[group] }}
+                  <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                  </button>
+                  <button
+                  ng-repeat="(user, permission) in model.permissions[corpus._id].users"
+                  ng-click="removeCorpusPermissionForUser(corpus._id, user)"
+                  type="button" class="btn btn-{{ permission | bootstrapPermission }} btn-xs">
+                  {{ model.username[user] }}
+                  <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
