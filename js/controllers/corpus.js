@@ -36,7 +36,7 @@ angular.module('camomileApp.controllers.corpus', [])
   $scope.model.username = {};
   $scope.model.groupname = {};
 
-  var _getCorpusRightsCallback = function (corpus) {
+  var _getCorpusPermissionsCallback = function (corpus) {
     return function (error, permission) {
       $scope.$apply(function () {
         $scope.model.permissions[corpus] = permission;
@@ -55,7 +55,7 @@ angular.module('camomileApp.controllers.corpus', [])
 
       for (i = corpora.length - 1; i >= 0; i--) {
         var corpus = corpora[i]._id;
-        Camomile.getCorpusRights(corpus, _getCorpusRightsCallback(corpus));
+        Camomile.getCorpusPermissions(corpus, _getCorpusPermissionsCallback(corpus));
       };
 
     });
@@ -123,25 +123,25 @@ angular.module('camomileApp.controllers.corpus', [])
   };
 
   $scope.setCorpusPermissionForGroup = function (corpus, group, permission) {
-    Camomile.setCorpusRightsForGroup(corpus, group, permission, function (error, data) {
+    Camomile.setCorpusPermissionsForGroup(corpus, group, permission, function (error, data) {
       getCorpora();
     });
   };
 
   $scope.setCorpusPermissionForUser = function (corpus, user, permission) {
-    Camomile.setCorpusRightsForUser(corpus, user, permission, function (error, data) {
+    Camomile.setCorpusPermissionsForUser(corpus, user, permission, function (error, data) {
       getCorpora();
     });
   };
 
   $scope.removeCorpusPermissionForGroup = function (corpus, group) {
-    Camomile.removeCorpusRightsForGroup(corpus, group, function (error, data) {
+    Camomile.removeCorpusPermissionsForGroup(corpus, group, function (error, data) {
       getCorpora();
     });
   };
 
   $scope.removeCorpusPermissionForUser = function (corpus, user) {
-    Camomile.removeCorpusRightsForUser(corpus, user, function (error, data) {
+    Camomile.removeCorpusPermissionsForUser(corpus, user, function (error, data) {
       getCorpora();
     });
   };
