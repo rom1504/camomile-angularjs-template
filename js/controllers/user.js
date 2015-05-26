@@ -1,6 +1,6 @@
 angular.module('camomileApp.controllers.user', [])
 
-.filter('userInGroup', function () {
+.filter('belongsTo', function () {
   return function (users, group) {
     var usersInGroup = [];
     for (var i = 0; i < users.length; i++) {
@@ -13,7 +13,7 @@ angular.module('camomileApp.controllers.user', [])
   };
 })
 
-.filter('groupContainsUser', function () {
+.filter('contains', function () {
   return function (groups, user) {
     var userGroups = [];
     for (var i = 0; i < groups.length; i++) {
@@ -26,67 +26,19 @@ angular.module('camomileApp.controllers.user', [])
   };
 })
 
+.filter('bootstrapIsAdmin', function () {
+  return function (user) {
+    if (user.role === 'admin') {
+      return 'danger';
+    } else {
+      return 'success';
+    };
+  };
+})
+
 .controller('UserCtrl', ['$scope', 'Camomile', function ($scope, Camomile) {
 
-  $scope.model = {};
-
-  $scope.model.users = [];
-  $scope.model.addUserToGroup = {};
-  $scope.model.groups = [];
-  $scope.model.addGroupForUser = {};
-
-  // update list of users 
-  var getUsers = function () {
-    Camomile.getUsers(function (err, data) {
-      var corpora;
-      if (err) {
-        users = [];
-      } else {
-        users = data;
-      }
-
-      // nested in $scope.$apply to make sure a change event is triggered
-      $scope.$apply(function () {
-        $scope.model.users = users;
-        for (var i = users.length - 1; i >= 0; i--) {
-          $scope.model.addUserToGroup[users[i]._id] = undefined;
-        };
-      });
-
-    });
-  };
-
-  // update list of media
-  var getGroups = function () {
-    Camomile.getGroups(function (err, data) {
-      var groups;
-      if (err) {
-        groups = [];
-      } else {
-        groups = data;
-      }
-      // nested in $scope.$apply to make sure a change event is triggered
-      $scope.$apply(function () {
-        $scope.model.groups = groups;
-        for (var i = groups.length - 1; i >= 0; i--) {
-          $scope.model.addGroupForUser[groups[i]._id] = undefined;
-        };
-
-      });
-    });
-  };
-
-  // get users on lonad
-  getUsers();
-  getGroups();
-
-  // make sure to update users and groups on login/logout
-  $scope.$parent.onLogInOrOut(function () {
-    getUsers();
-    getGroups();
-  });
-
-  $scope.newUser = function (user) {
+  $scope.createUser = function (user) {
     if (user.isAdmin) {
       user.role = 'admin';
     } else {
@@ -94,42 +46,29 @@ angular.module('camomileApp.controllers.user', [])
     }
 
     Camomile.createUser(user.username, user.password, {}, user.role, function (error, user) {
-      getUsers();
+      $scope.$parent.updateUsers();
     });
   };
 
-  $scope.newGroup = function (group) {
+  $scope.createGroup = function (group) {
     Camomile.createGroup(group.name, {}, function (error, group) {
-      getGroups();
+      $scope.$parent.updateGroups();
     });
   };
 
-  $scope.addUserToGroup = function (user) {
+  $scope.addUserToGroup = function (user, group) {
     Camomile.addUserToGroup(
-      user._id,
-      $scope.model.addUserToGroup[user._id],
-      function (error, data) {
-        $scope.model.addUserToGroup[user._id] = undefined;
-        getGroups();
-      });
-  };
-
-  $scope.addGroupForUser = function (group) {
-    Camomile.addUserToGroup(
-      $scope.model.addGroupForUser[group._id],
-      group._id,
-      function (error, data) {
-        $scope.model.addGroupForUser[group._id] = undefined;
-        getGroups();
+      user, group,
+      function (error, group) {
+        $scope.$parent.updateGroups();
       });
   };
 
   $scope.removeUserFromGroup = function (user, group) {
     Camomile.removeUserFromGroup(
-      user._id,
-      group._id,
-      function (error, data) {
-        getGroups();
+      user, group,
+      function (error, group) {
+        $scope.$parent.updateGroups();
       }
     );
   };

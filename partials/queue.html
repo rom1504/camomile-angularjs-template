@@ -19,7 +19,6 @@
           <input ng-model="queueQuery" type="text" placeholder="filter" autofocus>
         </form>
       </div>
-      <div class="panel-body">
         <ul class="list-group">
           <li class="list-group-item" ng-repeat="queue in model.queues | filter:queueQuery | orderBy: 'name'">
             <h4>{{queue.name}}</h4>
@@ -70,7 +69,6 @@
             </div>
           </li>
         </ul>
-      </div>
     </div>
   </div>
 </div>

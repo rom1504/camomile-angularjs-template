@@ -1,57 +1,65 @@
 <div class="row">
   <div class="col-md-6">
     <h3>Users</h3>
+    <!-- NEW USER -->
     <div class="panel panel-default">
       <div class="panel-heading">Add user</div>
       <div class="panel-body">
         <form novalidate class="form-inline">
           <div class="form-group">
             <label class="sr-only" for="username">Username</label>
-            <input type="text" ng-model="user.username" class="form-control" id="username" placeholder="Enter username">
+            <input type="text" ng-model="new_user.username" class="form-control" id="username" placeholder="Enter username">
           </div>
           <div class="form-group">
             <label class="sr-only" for="password">Password</label>
-            <input type="password" ng-model="user.password" class="form-control" id="password" placeholder="Password">
+            <input type="password" ng-model="new_user.password" class="form-control" id="password" placeholder="Password">
           </div>
           <div class="checkbox">
             <label>
-              <input ng-model="user.isAdmin" type="checkbox"> Admin
+              <input ng-model="new_user.isAdmin" type="checkbox"> Admin
             </label>
           </div>
-          <button type="submit" ng-click="newUser(user)" class="btn btn-default">New user</button>
+          <button type="submit" ng-click="createUser(new_user)" class="btn btn-default">New user</button>
         </form>
       </div>
     </div>
+    
+    <!-- EXISTING USERS -->
     <div class="panel panel-default">
+      <!-- filter -->
       <div class="panel-heading">
         <form class="form-inline">
           <input ng-model="userQuery" type="text" placeholder="filter" autofocus>
         </form>
       </div>
-      <div class="panel-body">
+      <!-- list of users -->
         <ul class="list-group">
-          <li class="list-group-item" ng-repeat="user in model.users | filter:userQuery | orderBy: 'username'">
-            {{user.username}}
+          <li class="list-group-item" ng-repeat="user in camomile.users.list | filter:userQuery | orderBy: 'username'">
+            <h4>{{user.username}}</h4>
             <ul class="list-inline">
-              <li ng-repeat="group in model.groups | groupContainsUser: user | orderBy: 'name'">
-                <button ng-click="removeUserFromGroup(user, group)" type="button" class="btn btn-default btn-xs">
+              <li>
+                <div class="btn-group" role="group">
+                  <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                  add group <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu">
+                    <li ng-repeat="group in camomile.groups.list">
+                      <a ng-click="addUserToGroup(user._id, group._id)">{{ group.name }}</a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li ng-repeat="group in camomile.groups.list | contains: user | orderBy: 'name'">
+                <button
+                ng-click="removeUserFromGroup(user._id, group._id)"
+                type="button"
+                class="btn btn-{{ user | bootstrapIsAdmin }} btn-xs">
                 {{ group.name }} <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                 </button>
-              </li>
-              <li>
-                <form novalidate class="form-inline">
-                  <select class="form-control input-sm"
-                    ng-options="group._id as group.name for group in model.groups"
-                    ng-model="model.addUserToGroup[user._id]"
-                    ng-change="addUserToGroup(user)">
-                    <option value="">-- add to group --</option>
-                  </select>
-                </form>
               </li>
             </ul>
           </li>
         </ul>
-      </div>
     </div>
   </div>
   <div class="col-md-6">
@@ -64,7 +72,7 @@
             <label class="sr-only" for="name">Name</label>
             <input type="text" ng-model="group.name" class="form-control" id="name" placeholder="Enter name">
           </div>
-          <button type="submit" ng-click="newGroup(group)" class="btn btn-default">New group</button>
+          <button type="submit" ng-click="createGroup(group)" class="btn btn-default">New group</button>
         </form>
       </div>
     </div>
@@ -74,30 +82,30 @@
           <input ng-model="groupQuery" type="text" placeholder="filter" autofocus>
         </form>
       </div>
-      <div class="panel-body">
         <ul class="list-group">
-          <li class="list-group-item" ng-repeat="group in model.groups | filter:groupQuery | orderBy: 'name'">
-            {{group.name}}
+          <li class="list-group-item" ng-repeat="group in camomile.groups.list | filter:groupQuery | orderBy: 'name'">
+            <h4>{{group.name}}</h4>
             <ul class="list-inline">
-              <li ng-repeat="user in model.users | userInGroup: group | orderBy: 'username'">
-                <button ng-click="removeUserFromGroup(user, group)" type="button" class="btn btn-default btn-xs">
+              <li>
+              <div class="btn-group" role="group">
+                <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                add user <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  <li ng-repeat="user in camomile.users.list | orderBy: 'username'">
+                    <a ng-click="addUserToGroup(user._id, group._id)">{{ user.username }}</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+              <li ng-repeat="user in camomile.users.list | belongsTo: group | orderBy: 'username'">
+                <button ng-click="removeUserFromGroup(user._id, group._id)" type="button" class="btn btn-{{ user | bootstrapIsAdmin }} btn-xs">
                 {{ user.username }} <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                 </button>
-              </li>
-              <li>
-                <form novalidate class="form-inline">
-                  <select class="form-control input-sm"
-                    ng-options="user._id as user.username for user in model.users"
-                    ng-model="model.addGroupForUser[group._id]"
-                    ng-change="addGroupForUser(group)">
-                    <option value="">-- add user --</option>
-                  </select>
-                </form>
               </li>
             </ul>
           </li>
         </ul>
-      </div>
     </div>
   </div>
 </div>

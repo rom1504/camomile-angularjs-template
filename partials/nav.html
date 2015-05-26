@@ -17,7 +17,7 @@
          </ul>
         
         <!-- Login form if not logged in -->
-        <div ng-hide="user">
+        <div ng-hide="camomile.me">
           <form ng-submit="login()" class="navbar-form navbar-right" role="form">
             <div class="form-group">
               <input type="text" placeholder="Login" class="form-control" ng-model="credentials.username">
@@ -29,12 +29,12 @@
           </form>
         </div>
         <!-- Logout form if logged in -->
-        <div ng-show="user">
+        <div ng-show="camomile.me">
           <form ng-submit="logout()" class="navbar-form navbar-right" role="form" >
             <div class="dropdown">
               <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown">
               <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-              {{ user.username }}
+              {{ camomile.me.username }}
               <span class="caret"></span>
               </button>
               <ul class="dropdown-menu" role="menu">
