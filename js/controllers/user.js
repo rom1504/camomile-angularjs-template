@@ -36,7 +36,7 @@ angular.module('camomileApp.controllers.user', [])
   };
 })
 
-.controller('UserCtrl', ['$scope', 'Camomile', function ($scope, Camomile) {
+.controller('UserCtrl', ['$scope', 'Camomile', 'flash', function ($scope, Camomile, flash) {
 
   $scope.createUser = function (user) {
     if (user.isAdmin) {
@@ -47,6 +47,20 @@ angular.module('camomileApp.controllers.user', [])
 
     Camomile.createUser(user.username, user.password, {}, user.role, function (error, user) {
       $scope.$parent.updateUsers();
+    });
+  };
+
+  $scope.deleteUser = function (id_user) {
+    Camomile.deleteUser(id_user, function (error, data) {
+      if (error) {
+        if (data.error === undefined) {
+          flash.error = 'something went wrong.';
+        } else {
+          flash.error = data.error;
+        };
+      }
+      $scope.$parent.updateUsers();
+      $scope.$parent.updateGroups();
     });
   };
 
