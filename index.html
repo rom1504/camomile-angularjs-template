@@ -25,8 +25,13 @@
   <!--[if lt IE 8]>
   <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->
+
   <div ng-include="'partials/nav.html'"></div>
   <div class="container-fluid">
+    <div flash-alert="error" active-class="in" class="alert fade">
+    <strong class="alert-heading">Error - </strong>
+    <span class="alert-message">{{flash.message}}</span>
+    </div>
     <div ng-view></div>
     <hr>
     <footer>
@@ -38,6 +43,7 @@
   <script src="bower_components/angular/angular.min.js"></script>
   <script src="bower_components/angular-route/angular-route.min.js"></script>
   <script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+  <script src="bower_components/angular-flash/dist/angular-flash.min.js"></script>
   <script src="bower_components/videogular/videogular.js"></script>
   <script src="bower_components/videogular-controls/vg-controls.js"></script>
   <script src="bower_components/autofill-event/src/autofill-event.js"></script>

@@ -1,4 +1,7 @@
-var camomileApp = angular.module('camomileApp', ['ngRoute',
+var camomileApp = angular.module('camomileApp', [
+    'ngRoute',
+    'angular-flash.service',
+    'angular-flash.flash-alert-directive',
     'camomile.controllers',
     'camomile.services',
     'camomileApp.production',
@@ -27,3 +30,18 @@ camomileApp.config(['$routeProvider', function ($routeProvider) {
         redirectTo: '/'
     });
 }]);
+
+camomileApp.config(function (flashProvider) {
+
+    // Support bootstrap 3.0 "alert-danger" class with error flash types
+    flashProvider.errorClassnames.push('alert-danger');
+
+    /**
+     * Also have...
+     *
+     * flashProvider.warnClassnames
+     * flashProvider.infoClassnames
+     * flashProvider.successClassnames
+     */
+
+});
