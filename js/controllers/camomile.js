@@ -19,6 +19,10 @@ angular.module('camomile.controllers', [])
   $scope.camomile.corpora.list = [];
   $scope.camomile.corpora.permissions = {};
 
+  $scope.camomile.queues = {};
+  $scope.camomile.queues.list = [];
+  $scope.camomile.queues.permissions = {};
+
   var onLoginCallback;
   // set callback called after login
   $scope.onLogin = function (callback) {
@@ -154,11 +158,49 @@ angular.module('camomile.controllers', [])
 
   };
 
+  var _getQueuePermissionsCallback = function (queue) {
+    return function (err, permissions) {
+
+      if (err) {
+        permissions = {
+          'users': {},
+          'groups': {}
+        };
+      }
+
+      $scope.$apply(function () {
+        $scope.camomile.queues.permissions[queue] = permissions;
+      });
+    }
+  };
+
+  // update list of queues
+  var updateQueues = $scope.updateQueues = function () {
+
+    Camomile.getQueues(function (err, queues) {
+      if (err) {
+        queues = [];
+      }
+
+      $scope.$apply(function () {
+        $scope.camomile.queues.list = queues;
+        for (i = queues.length - 1; i >= 0; i--) {
+          var queue = queues[i]._id;
+          Camomile.getQueuePermissions(
+            queue, _getQueuePermissionsCallback(queue));
+        };
+
+      });
+
+    });
+
+  };
+
   var updateAll = function () {
     updateUsers();
     updateGroups();
     updateCorpora();
-    // updateQueues();
+    updateQueues();
   };
 
   // authenticate user on load
