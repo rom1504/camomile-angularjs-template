@@ -28,7 +28,21 @@
           class="list-group-item"
           ng-repeat="corpus in camomile.corpora.list | filter:corpusQuery | orderBy: 'name'"
           ng-click="model.selectedCorpus = corpus._id">
-          <h4>{{corpus.name}}</h4>
+          <h4>
+                <button
+                ng-click=""
+                type="button"
+                class="btn btn-warning btn-xs">
+                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                </button>
+                <button
+                ng-click="deleteCorpus(corpus)"
+                type="button"
+                class="btn btn-danger btn-xs">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </button>
+            {{corpus.name}}
+          </h4>
           <ul class="list-inline">
             <li ng-repeat="permission in [3, 2, 1]">
               <div class="btn-group" role="group">
@@ -91,3 +105,5 @@
         </li>
       </ul>
     </div>
+  </div>
+</div>
