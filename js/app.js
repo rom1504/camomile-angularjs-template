@@ -8,6 +8,7 @@ var camomileApp = angular.module('camomileApp', [
     'camomileApp.controllers.browse',
     'camomileApp.controllers.user',
     'camomileApp.controllers.corpus',
+    'camomileApp.controllers.layer',
     'camomileApp.controllers.queue'
 ]);
 
@@ -20,6 +21,10 @@ camomileApp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/corpus', {
         templateUrl: 'partials/corpus.html',
         controller: 'CorpusCtrl'
+    });
+    $routeProvider.when('/layer', {
+        templateUrl: 'partials/layer.html',
+        controller: 'LayerCtrl'
     });
     $routeProvider.when('/queue', {
         templateUrl: 'partials/queue.html',

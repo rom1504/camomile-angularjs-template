@@ -1,0 +1,108 @@
+<div class="row">
+  <div class="col-md-6">
+    <h3>Layers</h3>
+    <!-- CHOOSE CORPUS -->
+    <div class="panel panel-default">
+      <div class="panel-heading">Corpus</div>
+      <div class="panel-body">
+        <select ng-options="corpus._id as corpus.name for corpus in camomile.corpora.list"
+                ng-model="model.selectedCorpus"
+                class="form-control">
+        </select>
+      </div>
+    </div>
+    <!-- EXISTING LAYERS -->
+    <div class="panel panel-default">
+      <!-- filter -->
+      <div class="panel-heading">
+        <form class="form-inline">
+          <input ng-model="layerQuery" type="text" placeholder="filter" autofocus>
+        </form>
+      </div>
+      <!-- list of layers -->
+      <ul class="list-group">
+        <li 
+          class="list-group-item"
+          ng-repeat="layer in model.layers.list | filter:layerQuery | orderBy: 'name'"
+          ng-click="model.selectedLayer = layer._id">
+          <h4>
+                <button
+                ng-click=""
+                type="button"
+                class="btn btn-warning btn-xs">
+                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                </button>
+                <button
+                ng-click="deleteLayer(layer)"
+                type="button"
+                class="btn btn-danger btn-xs">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </button>
+            {{layer.name}}
+          </h4>
+          <ul class="list-inline">
+            <li ng-repeat="permission in [3, 2, 1]">
+              <div class="btn-group" role="group">
+                <button class="btn btn-{{ permission | bootstrapPermission}} btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                {{ permission | humanReadablePermission }} <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  <li role="presentation" class="dropdown-header">Groups</li>
+                  <li ng-repeat="(group, name) in camomile.groups.id2name">
+                    <a ng-click="setLayerPermissionForGroup(layer._id, group, permission)">{{ name }}</a>
+                  </li>
+                  <li role="presentation" class="dropdown-header">Users</li>
+                  <li ng-repeat="(user, name) in camomile.users.id2name">
+                    <a ng-click="setLayerPermissionForUser(layer._id, user, permission)">{{ name }}</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+          <br/>
+          <ul class="list-inline">
+            <li ng-repeat="(group, permission) in model.layers.permissions[layer._id].groups">
+              <div class="btn-group" role="group">
+                <button
+                class="btn btn-{{ permission | bootstrapPermission }} btn-xs"
+                ng-click="removeLayerPermissionForGroup(layer._id, group)"
+                type="button">
+                group: {{ camomile.groups.id2name[group] }}
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </button>
+              </div>
+            </li>
+            <li ng-repeat="(user, permission) in model.layers.permissions[layer._id].users">
+              <div class="btn-group" role="group">
+                <button
+                class="btn btn-{{ permission | bootstrapPermission }} btn-xs"
+                ng-click="removeLayerPermissionForUser(layer._id, user)"
+                type="button" >
+                {{ camomile.users.id2name[user] }}
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </button>
+              </div>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+<!--
+  <div class="col-md-6">
+    <h3>Media</h3>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <form class="form-inline">
+          <input ng-model="mediumQuery" type="text" placeholder="filter" autofocus>
+        </form>
+      </div>
+      <ul class="list-group">
+        <li class="list-group-item" ng-repeat="medium in model.media.list | filter:mediumQuery | orderBy: 'name'">
+          {{medium.name}}
+        </li>
+      </ul>
+    </div>
+  </div>
+ -->
+</div>
