@@ -37,6 +37,12 @@
           <li class="list-group-item" ng-repeat="user in camomile.users.list | filter:userQuery | orderBy: 'username'">
             <h4>
                 <button
+                ng-click=""
+                type="button"
+                class="btn btn-warning btn-xs">
+                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                </button>
+                <button
                 ng-click="deleteUser(user._id)"
                 type="button"
                 class="btn btn-danger btn-xs">
