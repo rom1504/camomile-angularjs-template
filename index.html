@@ -32,7 +32,12 @@
     <strong class="alert-heading">Error - </strong>
     <span class="alert-message">{{flash.message}}</span>
     </div>
-    <div ng-view></div>
+    <div ng-show="camomile.me.role === 'admin'" ng-view>
+    </div>
+    <div ng-hide="camomile.me.role === 'admin'" class="jumbotron">
+      <h1>Access restricted</h1>
+       <p>Please login as admin</p>
+    </div> 
     <hr>
     <footer>
       <p>&copy; CNRS 2015</p>
