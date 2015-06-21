@@ -29,6 +29,13 @@
           <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
           </button>
           <button
+          ng-click="emptyQueue(queue)"
+          type="button"
+          class="btn btn-danger btn-xs">
+          <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+          {{ camomile.queues.nItems[queue._id] }}
+          </button>
+          <button
           ng-click="deleteQueue(queue)"
           type="button"
           class="btn btn-danger btn-xs">

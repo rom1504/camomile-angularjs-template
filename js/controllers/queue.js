@@ -45,6 +45,15 @@ angular.module('camomileApp.controllers.queue', [])
     });
   };
 
+  $scope.emptyQueue = function (queue) {
+
+    var fields = {};
+    fields.list = [];
+    Camomile.updateQueue(queue._id, fields, function (error, data) {
+      $scope.$parent.updateQueues();
+    });
+  };
+
   $scope.setQueuePermissionForGroup = function (queue, group, permission) {
     Camomile.setQueuePermissionsForGroup(queue, group, permission, function (error, data) {
       $scope.$parent.updateQueues();

@@ -22,6 +22,7 @@ angular.module('camomile.controllers', [])
   $scope.camomile.queues = {};
   $scope.camomile.queues.list = [];
   $scope.camomile.queues.permissions = {};
+  $scope.camomile.queues.nItems = {};
 
   var onLoginCallback;
   // set callback called after login
@@ -174,6 +175,19 @@ angular.module('camomile.controllers', [])
     }
   };
 
+  var _getQueueLengthCallback = function (queue) {
+    return function (err, n) {
+
+      if (err) {
+        n = '?';
+      };
+
+      $scope.$apply(function () {
+        $scope.camomile.queues.nItems[queue] = n;
+      });
+    }
+  };
+
   // update list of queues
   var updateQueues = $scope.updateQueues = function () {
 
@@ -184,13 +198,15 @@ angular.module('camomile.controllers', [])
 
       $scope.$apply(function () {
         $scope.camomile.queues.list = queues;
-        for (i = queues.length - 1; i >= 0; i--) {
-          var queue = queues[i]._id;
-          Camomile.getQueuePermissions(
-            queue, _getQueuePermissionsCallback(queue));
-        };
-
       });
+
+      for (i = queues.length - 1; i >= 0; i--) {
+        var queue = queues[i]._id;
+        Camomile.getQueuePermissions(
+          queue, _getQueuePermissionsCallback(queue));
+        Camomile.pickLength(
+          queue, _getQueueLengthCallback(queue));
+      };
 
     });
 
