@@ -27,9 +27,13 @@ angular.module('camomileApp.controllers.leaderboard', [
       // find group starting by 'team_'
       for (var i = myGroups.length - 1; i >= 0; i--) {
         var group = myGroups[i];
+        if (group2name[group] === 'organizer') {
+          return group2name[group];
+        }
         if (group2name[group].lastIndexOf('team_', 0) === 0) {
           return group2name[group];
         }
+
       };
 
       return undefined;
