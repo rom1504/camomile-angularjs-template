@@ -7,6 +7,7 @@ angular.module('camomileApp.controllers.monitoring', [
     $scope.layers = {};
     $scope.media = {};
     $scope.count = {};
+    $scope.atLeastOne = {};
 
     var fFindCorpusByName = function (corpusName) {
       return function (callback) {
@@ -106,10 +107,10 @@ angular.module('camomileApp.controllers.monitoring', [
         async.parallel({
           'shot': fFindLayerByName(
             id_corpus, 'mediaeval.submission_shot'),
+          'all': fFindLayerByName(
+            id_corpus, 'mediaeval.groundtruth.label.all'),
           'consensus': fFindLayerByName(
             id_corpus, 'mediaeval.groundtruth.label.consensus'),
-          'unknown': fFindLayerByName(
-            id_corpus, 'mediaeval.groundtruth.label.unknown'),
         }, function (error, layers) {
 
           if (error) {
@@ -129,13 +130,20 @@ angular.module('camomileApp.controllers.monitoring', [
 
     var fCountAnnotations = function (id_layer, id_medium) {
 
-      return function () {
+      return function (callback) {
         var options = {};
         options.returns_count = true;
         options.filter = {};
         options.filter.id_medium = id_medium;
         options.filter.id_layer = id_layer;
+
         Camomile.getAnnotations(function (error, n) {
+
+          if (error) {
+            console.log(error);
+            callback(error, null);
+            return;
+          }
 
           if ($scope.count[id_layer] === undefined) {
             $scope.count[id_layer] = {};
@@ -143,6 +151,38 @@ angular.module('camomileApp.controllers.monitoring', [
           $scope.$apply(function () {
             $scope.count[id_layer][id_medium] = n;
           });
+
+          callback(null, n);
+
+        }, options);
+      };
+    };
+
+    var fCountAtLeastOneAnnotation = function (id_layer, id_medium) {
+
+      return function (callback) {
+        var options = {};
+        options.filter = {};
+        options.filter.id_medium = id_medium;
+        options.filter.id_layer = id_layer;
+
+        Camomile.getAnnotations(function (error, annotations) {
+
+          if (error) {
+            callback(error, null);
+            return;
+          }
+
+          var shots = new Set();
+          for (var i = 0; i < annotations.length; i++) {
+            shots.add(annotations[i].fragment);
+          }
+
+          $scope.$apply(function () {
+            $scope.atLeastOne[id_medium] = shots.size;
+          });
+
+          callback(null, shots.size);
 
         }, options);
       };
@@ -167,21 +207,39 @@ angular.module('camomileApp.controllers.monitoring', [
           }, function (error, results) {
 
             if (error) {
-              console.log('error');
               console.log(error);
               return;
             }
 
-            for (var mediumName in results.media) {
-              if (mediumName.lastIndexOf('FPVDB0702', 0) !== 0) {
-                continue;
-              }
-              var id_medium = results.media[mediumName];
-              for (var layerName in results.layers) {
-                var id_layer = results.layers[layerName];
-                fCountAnnotations(id_layer, id_medium)();
-              }
-            };
+            async.forEachOfSeries(
+              results.media,
+              function (id_medium, mediumName, callback) {
+
+          var process = mediumName.startsWith('FPVDB0701') ||
+            mediumName.startsWith('FPVDB0702') ||
+            mediumName.startsWith('FPVDB0703');
+
+          if (!process) {
+            callback(null, 0);
+            return;
+          }
+                async.forEachOf(
+                  results.layers,
+                  function (id_layer, layerName, callback) {
+                    if (layerName !== 'all') {
+                      fCountAnnotations(id_layer, id_medium)(callback);
+                    } else {
+                      fCountAtLeastOneAnnotation(id_layer, id_medium)(callback);
+                    }
+                  },
+                  callback);
+              },
+              function (err) {
+                if (err) {
+                  console.log(err);
+                }
+              });
+
           });
         });
     };

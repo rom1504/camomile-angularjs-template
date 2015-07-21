@@ -81,9 +81,9 @@
               style="width: {{100 * count[layers.consensus][mediaID] / count[layers.shot][mediaID]}}%">
               <span class="sr-only">{{ count[layers.consensus][mediaID] }} </span>
             </div>
-            <div class="progress-bar progress-bar-warning progress-bar-striped"
-              style="width: {{100 * count[layers.unknown][mediaID] / count[layers.shot][mediaID]}}%">
-              <span class="sr-only">{{ count[layers.unknown][mediaID] }}</span>
+            <div class="progress-bar progress-bar-default progress-bar-striped"
+              style="width: {{100 * (atLeastOne[mediaID] - count[layers.consensus][mediaID]) / count[layers.shot][mediaID]}}%">
+              <span class="sr-only">{{ atLeastOne[mediaID] }}</span>
             </div>
           </div>
         </div>
@@ -98,17 +98,17 @@
       <script src="bower_components/async/lib/async.js"></script>
       <script src="bower_components/angular/angular.min.js"></script>
       <script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
-      
+
       <script src="bower_components/autofill-event/src/autofill-event.js"></script>
       <script src="js/config.js"></script>
-      
+
       <script src="js/services/camomile/fermata.js"></script>
       <script src="js/services/camomile/camomile.js"></script>
       <script src="js/services/camomile.js"></script>
-      
+
       <script src="js/controllers/camomile.js"></script>
       <script src="js/controllers/monitoring.js"></script>
-      
+
       <script src="js/app.js"></script>
       <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
       <script>
