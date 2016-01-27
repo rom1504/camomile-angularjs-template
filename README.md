@@ -35,3 +35,5 @@ Fork, update `js/config.js` and enjoy!
   ```
 
 * Visit [http://localhost:8080](http://localhost:8080)
+
+  You will need to allow cookies in your browser for this to work...
