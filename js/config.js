@@ -3,13 +3,5 @@
 
 angular.module('camomileApp.production', [])
     .constant('camomileConfig', {
-        backend: 'http://www.example.com/api'
-    });
-
-angular.module('camomileApp.development', [])
-    .constant('camomileConfig', {
         backend: 'http://localhost:3000'
     });
-
-// More info on configuration files 
-// at http://www.ng-newsletter.com/advent2013/#!/day/5
