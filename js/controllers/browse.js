@@ -23,7 +23,7 @@ angular.module('camomileApp.controllers.browse', [
     // selected layer
     $scope.browse.layer = undefined;
 
-    // update list of corpora 
+    // update list of corpora
     var getCorpora = function () {
       Camomile.getCorpora(function (err, data) {
         var corpora;
@@ -93,9 +93,6 @@ angular.module('camomileApp.controllers.browse', [
 
     $scope.$watch('browse.medium', function () {
       $scope.browse.mediumSrc = [{
-        src: $sce.trustAsResourceUrl(Camomile.getMediumURL($scope.browse.medium, "webm")),
-        type: "video/webm"
-      }, {
         src: $sce.trustAsResourceUrl(Camomile.getMediumURL($scope.browse.medium, "mp4")),
         type: "video/mp4"
       }, {
