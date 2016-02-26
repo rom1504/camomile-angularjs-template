@@ -1,5 +1,7 @@
 # Camomile / AngularJS frontend template
 
+![Screensho](/screenshot.png)
+
 This repository provides a simple [AngularJS](http://angularjs.org) template that can be used as a starting point to build web frontend based on any Camomile REST API [backend](http://github.com/camomile-project/camomile-server).
 
 In particular,
