@@ -1,0 +1,27 @@
+{
+  "name": "camomile-angularjs-template",
+  "version": "1.0.0",
+  "description": "Camomile / AngularJS frontend template",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/camomile-project/camomile-angularjs-template.git"
+  },
+  "keywords": [
+    "camomile",
+    "frontend",
+    "template"
+  ],
+  "author": "Hervé BREDIN",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/camomile-project/camomile-angularjs-template/issues"
+  },
+  "homepage": "https://github.com/camomile-project/camomile-angularjs-template#readme",
+  "dependencies": {
+    "camomile-client": "git+https://github.com/rom1504/camomile-client-javascript.git#npm_package"
+  }
+}
