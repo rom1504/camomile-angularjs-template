@@ -3,7 +3,7 @@ angular.module('camomileApp.controllers.browse', [
     "com.2fdevs.videogular",
     "com.2fdevs.videogular.plugins.controls",
   ])
-  .controller('BrowseCtrl', ['$scope', '$sce', 'Camomile', function ($scope, $sce, Camomile) {
+  .controller('BrowseCtrl', ['$scope', '$sce', 'Camomile', function ($scope, $sce, client) {
 
     // browsing stauts
     $scope.browse = {};
@@ -25,7 +25,7 @@ angular.module('camomileApp.controllers.browse', [
 
     // update list of corpora
     var getCorpora = function () {
-      Camomile.getCorpora(function (err, data) {
+      client.getCorpora(function (err, data) {
         var corpora;
         if (err) {
           corpora = [];
@@ -41,7 +41,7 @@ angular.module('camomileApp.controllers.browse', [
 
     // update list of media
     var getMedia = function () {
-      Camomile.getMedia(function (err, data) {
+      client.getMedia(function (err, data) {
         var media;
         if (err) {
           media = [];
@@ -61,7 +61,7 @@ angular.module('camomileApp.controllers.browse', [
 
     // update list of layers
     var getLayers = function () {
-      Camomile.getLayers(function (err, data) {
+      client.getLayers(function (err, data) {
         var layers;
         if (err) {
           layers = [];
@@ -93,10 +93,10 @@ angular.module('camomileApp.controllers.browse', [
 
     $scope.$watch('browse.medium', function () {
       $scope.browse.mediumSrc = [{
-        src: $sce.trustAsResourceUrl(Camomile.getMediumURL($scope.browse.medium, "mp4")),
+        src: $sce.trustAsResourceUrl(client.getMediumURL($scope.browse.medium, "mp4")),
         type: "video/mp4"
       }, {
-        src: $sce.trustAsResourceUrl(Camomile.getMediumURL($scope.browse.medium, "ogg")),
+        src: $sce.trustAsResourceUrl(client.getMediumURL($scope.browse.medium, "ogg")),
         type: "video/ogg"
       }];
     });

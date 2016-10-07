@@ -22,6 +22,6 @@
   },
   "homepage": "https://github.com/camomile-project/camomile-angularjs-template#readme",
   "dependencies": {
-    "camomile-client": "git+https://github.com/rom1504/camomile-client-javascript.git#npm_package"
+    "camomile-client": "0.7.0"
   }
 }
