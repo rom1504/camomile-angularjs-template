@@ -22,8 +22,7 @@ Fork, update `js/config.js` and enjoy!
   ```
   $ git clone git@github.com:camomile-project/camomile-angularjs-template.git
   $ cd camomile-angularjs-template
-  $ git submodule init
-  $ git submodule update
+  $ npm install
   ```
 
 * Update the configuration file `js/config.js`.
