@@ -25,58 +25,23 @@ angular.module('camomileApp.controllers.browse', [
 
     // update list of corpora
     var getCorpora = function () {
-      client.getCorpora(function (err, data) {
-        var corpora;
-        if (err) {
-          corpora = [];
-        } else {
-          corpora = data;
-        }
-        // nested in $scope.$apply to make sure a change event is triggered
-        $scope.$apply(function () {
-          $scope.browse.corpora = corpora;
-        });
-      });
+      client.getCorpora()
+        .then(data => $scope.$apply(() => $scope.browse.corpora = data))
+        .catch(err => $scope.$apply(() => $scope.browse.corpora = []));
     };
 
     // update list of media
     var getMedia = function () {
-      client.getMedia(function (err, data) {
-        var media;
-        if (err) {
-          media = [];
-        } else {
-          media = data;
-        }
-        // nested in $scope.$apply to make sure a change event is triggered
-        $scope.$apply(function () {
-          $scope.browse.media = media;
-        });
-      }, {
-        'filter': {
-          'id_corpus': $scope.browse.corpus
-        }
-      });
+      client.getMedia({filter:{'id_corpus': $scope.browse.corpus}})
+        .then(data => $scope.$apply(() => $scope.browse.media = data))
+        .catch(err => $scope.$apply(() => $scope.browse.media = []));
     };
-
+    
     // update list of layers
     var getLayers = function () {
-      client.getLayers(function (err, data) {
-        var layers;
-        if (err) {
-          layers = [];
-        } else {
-          layers = data;
-        }
-        // nested in $scope.$apply to make sure a change event is triggered
-        $scope.$apply(function () {
-          $scope.browse.layers = layers;
-        });
-      }, {
-        'filter': {
-          'id_corpus': $scope.browse.corpus
-        }
-      });
+      client.getLayers({filter:{'id_corpus': $scope.browse.corpus}})
+        .then(data => $scope.$apply(() => $scope.browse.layers = data))
+        .catch(err => $scope.$apply(() => $scope.browse.layers = []));
     };
 
     // get corpora on load

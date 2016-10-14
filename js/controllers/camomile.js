@@ -23,22 +23,10 @@ angular.module('camomile.controllers', [])
   };
 
   // authenticate user by making a call to /me
-  var _authenticate = function (callback) {
-
-    client.me(function (err, data) {
-      var user;
-      if (err) {
-        user = undefined;
-      } else {
-        user = data;
-      }
-      $scope.$apply(function () {
-        $scope.user = user;
-      });
-
-      // only call callback if it is defined
-      callback && callback();
-    });
+  var _authenticate = function () {
+    return client.me()
+      .then(data => $scope.$apply(() => $scope.user=data))
+      .catch(err => $scope.$apply(() => $scope.user=undefined));
   };
 
   // authenticate user on load
@@ -48,17 +36,17 @@ angular.module('camomile.controllers', [])
   // then call onLoginCallback (usually set by child controller)
   $scope.credentials = {};
   $scope.login = function () {
-    client.login($scope.credentials.username, $scope.credentials.password, function (err) {
-      if (!err) { _authenticate(onLoginCallback); }
-    });
+  client.login($scope.credentials.username, $scope.credentials.password)
+    .then(_authenticate)
+    .then(() => onLoginCallback(null));
   };
 
   // logout
   // then call onLogoutCallabck (usually set by child controller)
   $scope.logout = function () {
-    client.logout(function (err) {
-      if (!err) { _authenticate(onLogoutCallback); }
-    });
+    client.logout
+      .then(() => _authenticate())
+      .then(() => onLogoutCallback(null))  
   };
 
 }]);
